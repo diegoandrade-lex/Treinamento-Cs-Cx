@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trilha de Formação CS/CX no Jurídico · LEX</title>
+<style>
+  :root{--navy:#1B2A41;--navy2:#22344F;--coral:#F96167;--coral-soft:#FCE4E5;
+    --tint:#F3F6F9;--line:#DCE3EC;--muted:#6B7A90;--ink:#28394f;--green:#2E9E7B;--maxw:960px;}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+    color:var(--ink);background:var(--tint);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3,.serif{font-family:Georgia,"Times New Roman",serif;line-height:1.15;}
+  a{text-decoration:none;color:inherit}
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--coral);}
+
+  header{background:var(--navy);color:#fff;position:relative;overflow:hidden;}
+  header .in{max-width:var(--maxw);margin:0 auto;padding:88px 22px 76px;position:relative;z-index:2;}
+  header .r1{position:absolute;right:-110px;top:-110px;width:380px;height:380px;border-radius:50%;background:var(--coral);opacity:.9;}
+  header .r2{position:absolute;right:30px;top:110px;width:170px;height:170px;border-radius:50%;background:var(--navy);}
+  header .eyebrow{color:#fff;background:var(--coral);display:inline-block;padding:6px 14px;border-radius:6px;}
+  header h1{font-size:clamp(32px,5.5vw,50px);margin:20px 0 14px;max-width:11em;}
+  header p{font-size:18px;color:#cbd6e4;max-width:30em;margin:0;}
+
+  main{max-width:var(--maxw);margin:0 auto;padding:56px 22px 20px;}
+  .lead{color:var(--muted);margin:0 0 28px;font-size:16px;}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+  .mod{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;
+    box-shadow:0 6px 20px rgba(27,42,65,.05);transition:transform .12s ease,box-shadow .12s ease;}
+  .mod.on:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(27,42,65,.12);}
+  .mod .top{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+  .num{width:48px;height:48px;border-radius:12px;font-family:Georgia,serif;font-weight:700;font-size:20px;
+    display:flex;align-items:center;justify-content:center;color:#fff;flex:none;}
+  .status{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:6px;margin-left:auto;}
+  .status.ok{background:var(--coral-soft);color:var(--coral);}
+  .status.soon{background:#EDF1F5;color:var(--muted);}
+  .mod h3{font-size:19px;color:var(--navy);margin:0 0 6px;}
+  .mod p{font-size:14px;color:var(--ink);margin:0 0 18px;flex:1;}
+  .go{align-self:flex-start;background:var(--coral);color:#fff;font-weight:700;font-size:14px;padding:11px 22px;border-radius:9px;}
+  .go:hover{filter:brightness(1.05)}
+  .locked{align-self:flex-start;color:var(--muted);font-size:13px;font-weight:600;}
+  .mod.off{opacity:.72;}
+  .mod.off .num{background:#AEB9C6;}
+
+  footer{max-width:var(--maxw);margin:40px auto 0;padding:26px 22px 50px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);}
+  footer b{color:var(--navy)}
+
+  @media(max-width:720px){.grid{grid-template-columns:1fr}header .r1{width:260px;height:260px;right:-80px;top:-80px}main{padding-top:44px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="r1"></div><div class="r2"></div>
+  <div class="in">
+    <span class="eyebrow">LEX · Backoffice Jurídico</span>
+    <h1>Trilha de Formação em Experiência do Cliente</h1>
+    <p>O programa de CS/CX que forma o time do zero e padroniza a operação — para escalar com segurança e dentro da ética.</p>
+  </div>
+</header>
+
+<main>
+  <p class="lead">Seis módulos, do conceito à prática. Cada módulo traz conteúdo, resumo e uma prova com certificação. Comece pelo início.</p>
+  <div class="grid">
+
+    <a class="mod on" href="modulo-01.html">
+      <div class="top">
+        <div class="num" style="background:var(--coral)">01</div>
+        <span class="status ok">Disponível</span>
+      </div>
+      <h3>Fundamentos de CS/CX no Jurídico</h3>
+      <p>CX, CS e Suporte; a jornada do cliente jurídico; obrigação de meio; sigilo, LGPD e ética da OAB.</p>
+      <span class="go">Começar →</span>
+    </a>
+
+    <div class="mod off">
+      <div class="top">
+        <div class="num">02</div>
+        <span class="status soon">Em breve</span>
+      </div>
+      <h3>Quem é o cliente do escritório</h3>
+      <p>Personas do cliente jurídico, pontos de contato e o mapa de persona aplicado ao seu escritório.</p>
+      <span class="locked">Disponível em breve</span>
+    </div>
+
+    <div class="mod off">
+      <div class="top">
+        <div class="num">03</div>
+        <span class="status soon">Em breve</span>
+      </div>
+      <h3>Cultura e experiência do colaborador</h3>
+      <p>Como a cultura customer centric se sustenta dentro do escritório, começando por quem trabalha nele.</p>
+      <span class="locked">Disponível em breve</span>
+    </div>
+
+    <div class="mod off">
+      <div class="top">
+        <div class="num">04</div>
+        <span class="status soon">Em breve</span>
+      </div>
+      <h3>Comunicação e atendimento humanizado</h3>
+      <p>Tom de voz, canais, escrita e empatia técnica — encantando dentro da ética da OAB.</p>
+      <span class="locked">Disponível em breve</span>
+    </div>
+
+    <div class="mod off">
+      <div class="top">
+        <div class="num">05</div>
+        <span class="status soon">Em breve</span>
+      </div>
+      <h3>Acompanhamento processual na visão do cliente</h3>
+      <p>Transparência, proatividade, relatórios e alinhamento de expectativa no dia a dia.</p>
+      <span class="locked">Disponível em breve</span>
+    </div>
+
+    <div class="mod off">
+      <div class="top">
+        <div class="num">06</div>
+        <span class="status soon">Em breve</span>
+      </div>
+      <h3>Métricas de CS/CX: NPS, CSAT e CES</h3>
+      <p>O que medir, como medir e como transformar detrator em promotor.</p>
+      <span class="locked">Disponível em breve</span>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <b>LEX · Backoffice para Escritórios Jurídicos</b> — Trilha de Formação em Experiência do Cliente.<br>
+  Conteúdo interno de treinamento.
+</footer>
+</body>
+</html>
