@@ -200,6 +200,11 @@
   .emoji.sel{border-color:var(--coral);background:var(--coral-soft);transform:translateY(-3px) scale(1.05)}
   .emoji-label{font-size:14px;color:var(--navy);font-weight:700;min-height:20px;margin-top:8px}
   .counter{font-size:12px;color:var(--muted);text-align:right;margin-top:5px}
+  .nps-row{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 4px}
+  .nps-btn{width:44px;height:44px;border-radius:9px;border:none;color:#fff;font-weight:700;font-size:15px;cursor:pointer;font-family:inherit;transition:transform .1s}
+  .nps-btn:hover{transform:translateY(-2px)}
+  .nps-btn.sel{outline:3px solid var(--navy);outline-offset:2px;transform:translateY(-2px) scale(1.06)}
+  .nps-scale{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);max-width:526px;margin-top:2px}
   .thanks{text-align:center;padding:14px 6px}
   .thanks .big{font-size:58px;line-height:1;margin-bottom:8px}
   .thanks h2{color:var(--navy);font-size:28px;margin:0 0 8px}
@@ -586,7 +591,7 @@
     <!-- satisfação -->
     <div class="qz hidden" id="q-eval">
       <h2 class="serif">Avaliação do módulo</h2>
-      <p class="hint" style="margin:0 0 22px">Duas perguntas rápidas — elas nos ajudam a melhorar o material para você e para os próximos.</p>
+      <p class="hint" style="margin:0 0 22px">Três perguntas rápidas — elas nos ajudam a melhorar o material para você e para os próximos.</p>
 
       <label class="field">
         <span class="l">1. Esse conteúdo fez sentido para você?</span>
@@ -607,6 +612,13 @@
         <div class="err" id="e-emoji">Escolha uma figurinha para continuar.</div>
       </div>
 
+      <div class="field">
+        <span class="l">3. De 0 a 10, o quanto você recomendaria este módulo?</span>
+        <div class="nps-row" id="nps"></div>
+        <div class="nps-scale"><span>0 · nada provável</span><span>muito provável · 10</span></div>
+        <div class="err" id="e-nps">Escolha uma nota de 0 a 10.</div>
+      </div>
+
       <div class="actions" style="margin-top:6px">
         <button class="btn" id="sendEval">Enviar avaliação</button>
       </div>
@@ -617,7 +629,7 @@
       <div class="thanks">
         <div class="big">🙌</div>
         <h2 class="serif">Obrigado pela sua avaliação!</h2>
-        <p class="hint" style="font-size:15px;max-width:34em;margin:0 auto 4px">Sua opinião ajuda a LEX a entregar um material cada vez melhor. Sua nota e avaliação foram registradas na trilha. Se quiser, você também pode baixar um comprovante.</p>
+        <p class="hint" style="font-size:15px;max-width:34em;margin:0 auto 4px">Sua opinião ajuda a LEX a entregar um material cada vez melhor. Sua nota e avaliação foram registradas na trilha.</p>
       </div>
       <div class="actions" style="justify-content:center;margin-top:18px">
         <a class="btn ghost" href="index.html">Voltar para a trilha →</a>
@@ -650,7 +662,7 @@ const QUESTIONS=[
 // ===== Cole aqui a URL do Web App do Google (termina em /exec). Enquanto vazio, o site funciona e o aluno baixa o CSV como backup. =====
 const ENDPOINT = "https://script.google.com/macros/s/AKfycbx278npWP65rs8QvXVByDzjm9hbojhVeMt4-algK9FG4zZuBNFSQDwPoXTIiFbDDKzEGA/exec";
 
-const PASS=70;const answers=new Array(QUESTIONS.length).fill(null);let learner={};let evalData={sentido:'',satisf:null,satisfLabel:''};
+const PASS=70;const answers=new Array(QUESTIONS.length).fill(null);let learner={};let evalData={sentido:'',satisf:null,satisfLabel:'',recomendaria:null};
 const $=s=>document.querySelector(s);
 function validEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((v||'').trim());}
 function er(id,show){$('#'+id).classList.toggle('show',show);}
@@ -715,31 +727,34 @@ document.querySelectorAll('#emojis .emoji').forEach(btn=>{
   $('#emojiLabel').textContent=btn.dataset.label;er('e-emoji',false);});
 });
 
+// NPS 0-10 (padrão G4)
+(function(){var row=$('#nps');if(!row)return;for(var i=0;i<=10;i++){(function(v){
+ var b=document.createElement('button');b.type='button';b.className='nps-btn';b.textContent=v;b.dataset.v=v;
+ b.style.background = v<=6 ? '#E5484D' : (v<=8 ? '#E8A400' : '#2E9E7B');
+ b.addEventListener('click',function(){
+  document.querySelectorAll('#nps .nps-btn').forEach(function(x){x.classList.remove('sel');});
+  b.classList.add('sel');evalData.recomendaria=v;er('e-nps',false);});
+ row.appendChild(b);})(i);}})();
+
 // enviar avaliação
 $('#sendEval').addEventListener('click',()=>{
- if(!evalData.satisf){er('e-emoji',true);return;}
+ var okv=true;
+ if(!evalData.satisf){er('e-emoji',true);okv=false;}
+ if(evalData.recomendaria===null){er('e-nps',true);okv=false;}
+ if(!okv)return;
  evalData.sentido=$('#sentido').value.trim();
  var r=window._r||{};
  sendToSheet({nome:learner.nome,email:learner.email,unidade:learner.unidade,
   modulo:'Módulo 01 - Fundamentos',acertos:r.ok,total:r.total,percentual:(r.pct||0)+'%',
   situacao:r.pass?'Aprovado':'Não aprovado',fezSentido:evalData.sentido||'-',
-  satisfacao:evalData.satisf,satisfacaoLabel:evalData.satisfLabel});
+  satisfacao:evalData.satisf,satisfacaoLabel:evalData.satisfLabel,recomendaria:evalData.recomendaria});
  $('#q-eval').classList.add('hidden');$('#q-thanks').classList.remove('hidden');
  $('#prova').scrollIntoView({behavior:'smooth'});});
 function sendToSheet(payload){
- if(!ENDPOINT||ENDPOINT.indexOf('http')!==0)return; // ainda não configurado: CSV é o backup
+ if(!ENDPOINT||ENDPOINT.indexOf('http')!==0)return;
  try{fetch(ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});}
  catch(e){}
 }
-
-// baixar comprovante (nota + avaliação)
-$('#dl').addEventListener('click',()=>{const r=window._r,d=r.when,p=n=>String(n).padStart(2,'0');
- const st=d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes());
- const rows=[["Nome","Email","Unidade","Modulo","Acertos","Total","Percentual","Situacao","Fez_Sentido","Satisfacao_1a5","Satisfacao","Data_Hora"],
-  [learner.nome,learner.email,learner.unidade,"Modulo 01 - Fundamentos",r.ok,r.total,r.pct+"%",r.pass?"Aprovado":"Nao aprovado",evalData.sentido||"-",evalData.satisf||"-",evalData.satisfLabel||"-",st]];
- const csv='\uFEFF'+rows.map(row=>row.map(c=>{c=String(c);return /[",;\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c;}).join(';')).join('\r\n');
- const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
- a.download='M01_'+learner.email.replace(/[^a-z0-9]/gi,'_')+'.csv';document.body.appendChild(a);a.click();a.remove();});
 </script>
 </body>
 </html>
