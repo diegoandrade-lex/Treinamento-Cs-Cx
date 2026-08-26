@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conclusão da Trilha · CS/CX · LEX</title>
+<style>
+  :root{
+    --navy:#1B2A41; --coral:#F96167; --tint:#F3F6F9; --line:#DCE3EC;
+    --muted:#6B7A90; --ink:#28394f;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;display:flex;flex-direction:column;
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+    color:var(--ink);background:var(--tint);line-height:1.62;-webkit-font-smoothing:antialiased;}
+  h1,.serif{font-family:Georgia,"Times New Roman",serif;}
+
+  main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;}
+  .card{background:var(--navy);color:#fff;border-radius:22px;position:relative;overflow:hidden;
+    max-width:660px;width:100%;padding:64px 44px;text-align:center;box-shadow:0 20px 60px rgba(27,42,65,.18);}
+  .card .ring{position:absolute;border-radius:50%;background:var(--coral);}
+  .card .r1{width:280px;height:280px;right:-120px;top:-140px;opacity:.9;}
+  .card .r2{width:180px;height:180px;left:-90px;bottom:-110px;opacity:.5;}
+  .card .in{position:relative;z-index:2;}
+  .badge{font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#fff;
+    background:var(--coral);display:inline-block;padding:7px 16px;border-radius:7px;}
+  .emoji{font-size:52px;line-height:1;margin:22px 0 6px;}
+  h1{font-size:clamp(28px,5vw,42px);margin:8px 0 16px;}
+  p.msg{font-size:18px;color:#cdd8e6;margin:0 auto 10px;max-width:30em;}
+  p.msg b{color:#fff;}
+  .rule{width:60px;height:3px;background:var(--coral);border-radius:2px;margin:26px auto 24px;}
+  .btn{display:inline-block;text-decoration:none;font-weight:700;font-size:15px;padding:14px 28px;
+    border-radius:11px;background:#fff;color:var(--navy);}
+  .btn:hover{filter:brightness(.96);}
+  footer{background:var(--navy);color:#8fa0b6;text-align:center;padding:22px 20px;font-size:12.5px;}
+  footer a{color:#cdd8e6;}
+  @media(max-width:520px){ .card{padding:48px 26px;} }
+</style>
+</head>
+<body>
+  <main>
+    <div class="card">
+      <div class="ring r1"></div><div class="ring r2"></div>
+      <div class="in">
+        <span class="badge">Trilha concluída</span>
+        <div class="emoji">🎉</div>
+        <h1>Parabéns por chegar até aqui!</h1>
+        <p class="msg">Você percorreu os <b>seis módulos</b> da Trilha de Formação em CS/CX no Jurídico — dos fundamentos às métricas.</p>
+        <p class="msg">Agora é levar tudo isso para o dia a dia do escritório. O cliente agradece. 💙</p>
+        <div class="rule"></div>
+        <a class="btn" href="index.html">Voltar para a trilha</a>
+      </div>
+    </div>
+  </main>
+  <footer>LEX · Backoffice para Escritórios Jurídicos · <a href="index.html">Voltar à trilha</a></footer>
+</body>
+</html>
