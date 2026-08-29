@@ -545,6 +545,7 @@
         <div class="big">🙌</div>
         <h2 class="serif">Obrigado pela sua avaliação!</h2>
         <p class="hint" style="font-size:15px;max-width:34em;margin:0 auto 4px">Sua opinião ajuda a LEX a entregar um material cada vez melhor. Sua nota e avaliação foram registradas na trilha.</p>
+        <p class="hint" id="obsnote" style="display:none;font-size:14.5px;color:var(--coral);font-weight:600;max-width:34em;margin:12px auto 0">⚠ Observação: você não atingiu a média de 70% na prova após as 2 tentativas. O módulo foi registrado como concluído com essa observação — vale revisar o conteúdo com calma.</p>
       </div>
       <div class="actions" style="justify-content:center;margin-top:18px">
         <a class="btn ghost" href="index.html">Voltar para a trilha →</a>
@@ -608,18 +609,22 @@ function prog(){const d=answers.filter(a=>a!==null).length;
 $('#finish').addEventListener('click',()=>{const miss=answers.map((a,i)=>a===null?i:-1).filter(i=>i>=0);
  if(miss.length){miss.forEach(i=>$('#q'+i).classList.add('miss'));
   document.getElementById('q'+miss[0]).scrollIntoView({behavior:'smooth',block:'center'});return;}res();});
+let attempts=0;const MAXTRY=2;
 function res(){let ok=0;answers.forEach((a,i)=>{if(a===QUESTIONS[i].a)ok++;});
- const pct=Math.round(ok/QUESTIONS.length*100),pass=pct>=PASS;
+ const pct=Math.round(ok/QUESTIONS.length*100),pass=pct>=PASS;attempts++;const last=attempts>=MAXTRY;
  $('#pct').textContent=pct+'%';const col=pass?'var(--green)':'var(--coral)';
  $('#ring').style.background='conic-gradient('+col+' '+pct+'%, #e6ecf3 0)';$('#pct').style.color=col;
- const b=$('#badge');b.textContent=pass?'Aprovado':'Não aprovado';b.className='badge '+(pass?'ok':'no');
- $('#rtitle').textContent=pass?'Módulo concluído!':'Quase lá';
- $('#rsub').textContent=ok+' de '+QUESTIONS.length+' corretas · '+(pass?'nota suficiente para liberar o Módulo 05.':'você precisa de 70% (7 acertos). Revise e refaça.');
+ const b=$('#badge');b.textContent=pass?'Aprovado':(last?'Não atingido':'Não aprovado');b.className='badge '+(pass?'ok':'no');
+ $('#rtitle').textContent=pass?'Módulo concluído!':(last?'Tentativas concluídas':'Quase lá');
+ $('#rsub').textContent=ok+' de '+QUESTIONS.length+' corretas · '+(pass?'nota suficiente para liberar o Módulo 05.':(last?'você não atingiu os 70% nas 2 tentativas. Você pode seguir para o próximo módulo, mas recomendamos revisar o conteúdo.':'você precisa de 70% (7 acertos). Você ainda tem mais 1 tentativa.'));
+ $('#retry').style.display=(!pass&&!last)?'':'none';
+ $('#toEval').style.display=(pass||last)?'':'none';
+ $('#toEval').textContent=pass?'Avaliar este módulo →':'Avaliar e seguir mesmo assim →';
  const rv=$('#review');rv.innerHTML='<h3 class="serif" style="font-size:19px;color:var(--navy);margin:0 0 10px">Revisão</h3>';
  QUESTIONS.forEach((it,i)=>{const okq=answers[i]===it.a;const d=document.createElement('div');d.className='ri';
   let h='<div class="mk '+(okq?'c':'w')+'">'+(okq?'✓':'✕')+'</div><div><b>'+(i+1)+'. '+it.q+'</b><br>Sua resposta: '+it.o[answers[i]];
   if(!okq)h+='<br><span class="corr">Correta: '+it.o[it.a]+'</span>';h+='</div>';d.innerHTML=h;rv.appendChild(d);});
- window._r={ok,total:QUESTIONS.length,pct,pass,when:new Date()};
+ window._r={ok,total:QUESTIONS.length,pct,pass,attempts,when:new Date()};
  $('#q-quiz').classList.add('hidden');$('#q-res').classList.remove('hidden');
  $('#prova').scrollIntoView({behavior:'smooth'});}
 $('#retry').addEventListener('click',()=>{answers.fill(null);$('#q-res').classList.add('hidden');
@@ -661,9 +666,10 @@ $('#sendEval').addEventListener('click',()=>{
  var r=window._r||{};
  sendToSheet({nome:learner.nome,email:learner.email,unidade:learner.unidade,
   modulo:'Módulo 04 - Comunicação',acertos:r.ok,total:r.total,percentual:(r.pct||0)+'%',
-  situacao:r.pass?'Aprovado':'Não aprovado',fezSentido:evalData.sentido||'-',
+  situacao:r.pass?'Aprovado':'Não aprovado (2 tentativas)',fezSentido:evalData.sentido||'-',
   satisfacao:evalData.satisf,satisfacaoLabel:evalData.satisfLabel,recomendaria:evalData.recomendaria});
  $('#q-eval').classList.add('hidden');$('#q-thanks').classList.remove('hidden');
+ if(window._r&&!window._r.pass){var o=document.getElementById('obsnote');if(o)o.style.display='block';}
  $('#prova').scrollIntoView({behavior:'smooth'});});
 function sendToSheet(payload){
  if(!ENDPOINT||ENDPOINT.indexOf('http')!==0)return;
