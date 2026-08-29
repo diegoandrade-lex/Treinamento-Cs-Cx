@@ -710,6 +710,7 @@ $('#sendEval').addEventListener('click',()=>{
   satisfacao:evalData.satisf,satisfacaoLabel:evalData.satisfLabel,recomendaria:evalData.recomendaria});
  $('#q-eval').classList.add('hidden');$('#q-thanks').classList.remove('hidden');
  if(window._r&&!window._r.pass){var o=document.getElementById('obsnote');if(o)o.style.display='block';}
+ try{var _K='lex_trilha_cscx';var _P=JSON.parse(localStorage.getItem(_K)||'{}');_P[3]=true;localStorage.setItem(_K,JSON.stringify(_P));}catch(e){}
  $('#prova').scrollIntoView({behavior:'smooth'});});
 function sendToSheet(payload){
  if(!ENDPOINT||ENDPOINT.indexOf('http')!==0)return;
