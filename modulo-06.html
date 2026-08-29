@@ -416,8 +416,8 @@
 <section id="resumo">
   <div class="inner reveal">
     <span class="eyebrow">Resumo do módulo</span>
-    <h2 class="sec">Fechando o Módulo 06 — e a trilha</h2>
-    <p class="lead">Uma última passada pelo conteúdo — e uma palavra sobre o que você conquistou.</p>
+    <h2 class="sec">Fechando o Módulo 06</h2>
+    <p class="lead">Uma última passada por tudo o que você viu — e um aperitivo do que vem a seguir.</p>
     <div class="sumgrid">
       <div class="sumcard">
         <h3><span class="d"></span> O que você viu</h3>
@@ -434,13 +434,13 @@
         </ul>
       </div>
       <div class="nextcard">
-        <span class="lbl">PARABÉNS</span>
-        <h3>Você concluiu a trilha! 🎉</h3>
+        <span class="lbl">A SEGUIR</span>
+        <h3>Módulo 07 — A primeira impressão</h3>
         <ul>
-          <li>Você percorreu os <b>seis módulos</b> de CS/CX no jurídico.</li>
-          <li>Dos fundamentos às métricas, do cliente à cultura.</li>
-          <li>Agora é levar isso para o dia a dia do escritório.</li>
-          <li>Obrigado por evoluir com a gente. O cliente agradece!</li>
+          <li>Como o cliente <b>chega</b> e por que a entrada define tudo.</li>
+          <li>A primeira consulta e a conversão em contrato, com ética.</li>
+          <li>O <b>onboarding</b>: os primeiros dias que mais marcam.</li>
+          <li>Ferramenta: o checklist da primeira impressão.</li>
         </ul>
       </div>
     </div>
@@ -542,10 +542,9 @@
         <p class="hint" style="font-size:15px;max-width:34em;margin:0 auto 4px">Sua opinião ajuda a LEX a entregar um material cada vez melhor. Sua nota e avaliação foram registradas na trilha.</p>
       </div>
       <div class="actions" style="justify-content:center;margin-top:18px">
-        <a class="btn" href="certificado.html">Ver encerramento →</a>
-        <a class="btn ghost" href="index.html">Voltar para a trilha</a>
+        <a class="btn ghost" href="index.html">Voltar para a trilha →</a>
       </div>
-      <p class="hint" style="text-align:center;margin-top:16px">Você concluiu a <b>trilha completa de CS/CX no Jurídico</b>. Parabéns pela dedicação! 🎉</p>
+      <p class="hint" style="text-align:center;margin-top:16px">O <b>Módulo 07 — A primeira impressão</b> é o próximo passo da sua trilha.</p>
     </div>
   </div>
 </section>
@@ -610,7 +609,7 @@ function res(){let ok=0;answers.forEach((a,i)=>{if(a===QUESTIONS[i].a)ok++;});
  $('#ring').style.background='conic-gradient('+col+' '+pct+'%, #e6ecf3 0)';$('#pct').style.color=col;
  const b=$('#badge');b.textContent=pass?'Aprovado':'Não aprovado';b.className='badge '+(pass?'ok':'no');
  $('#rtitle').textContent=pass?'Módulo concluído!':'Quase lá';
- $('#rsub').textContent=ok+' de '+QUESTIONS.length+' corretas · '+(pass?'nota suficiente para concluir a trilha.':'você precisa de 70% (7 acertos). Revise e refaça.');
+ $('#rsub').textContent=ok+' de '+QUESTIONS.length+' corretas · '+(pass?'nota suficiente para liberar o Módulo 07.':'você precisa de 70% (7 acertos). Revise e refaça.');
  const rv=$('#review');rv.innerHTML='<h3 class="serif" style="font-size:19px;color:var(--navy);margin:0 0 10px">Revisão</h3>';
  QUESTIONS.forEach((it,i)=>{const okq=answers[i]===it.a;const d=document.createElement('div');d.className='ri';
   let h='<div class="mk '+(okq?'c':'w')+'">'+(okq?'✓':'✕')+'</div><div><b>'+(i+1)+'. '+it.q+'</b><br>Sua resposta: '+it.o[answers[i]];
