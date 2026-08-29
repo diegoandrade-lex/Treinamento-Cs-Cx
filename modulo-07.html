@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 07 · A primeira impressão: captação e onboarding · LEX</title>
+<style>
+  :root{
+    --navy:#1B2A41; --navy2:#22344F; --coral:#F96167; --coral-soft:#FCE4E5;
+    --tint:#F3F6F9; --line:#DCE3EC; --muted:#6B7A90; --ink:#28394f;
+    --green:#2E9E7B; --white:#fff; --maxw:820px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+    color:var(--ink);background:var(--tint);line-height:1.62;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3,.serif{font-family:Georgia,"Times New Roman",serif;line-height:1.2;}
+
+  #bar{position:fixed;top:0;left:0;height:4px;width:0;background:var(--coral);z-index:50;transition:width .1s linear;}
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--coral);}
+  section{padding:60px 20px;}
+  .inner{max-width:var(--maxw);margin:0 auto;}
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease;}
+  .reveal.in{opacity:1;transform:none;}
+  a{color:inherit}
+
+  #hero{background:var(--navy);color:#fff;position:relative;overflow:hidden;}
+  #hero .h-inner{max-width:var(--maxw);margin:0 auto;padding:92px 20px 80px;position:relative;z-index:2;}
+  #hero .ring1{position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;background:var(--coral);opacity:.92;z-index:1;}
+  #hero .ring2{position:absolute;right:20px;top:120px;width:190px;height:190px;border-radius:50%;background:var(--navy);z-index:1;}
+  #hero .eyebrow{color:#fff;background:var(--coral);display:inline-block;padding:6px 14px;border-radius:6px;}
+  #hero h1{font-size:clamp(34px,6vw,54px);margin:22px 0 14px;max-width:9.5em;}
+  #hero p.sub{font-size:19px;color:#cbd6e4;margin:0 0 26px;max-width:24em;}
+  .meta{display:flex;gap:10px;flex-wrap:wrap;}
+  .chip{background:var(--navy2);border:1px solid #33475f;border-radius:999px;padding:8px 16px;font-size:13px;color:#dbe4ef;}
+  .chip b{color:#fff}
+  .scrollcue{margin-top:34px;font-size:13px;color:#9fb0c6;letter-spacing:1px;}
+
+  h2.sec{font-size:clamp(25px,4.4vw,33px);color:var(--navy);margin:10px 0 8px;}
+  p.lead{color:var(--muted);font-size:16px;margin:0 0 24px;}
+  p.body{font-size:16.5px;margin:0 0 15px;}
+  .body b{color:var(--navy)}
+
+  /* practical example box */
+  .ex{background:#fff;border:1px solid var(--line);border-left:4px solid var(--coral);border-radius:12px;padding:20px 22px;margin:20px 0;}
+  .ex .xl{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--coral);margin-bottom:8px;display:block;}
+  .ex p{margin:0 0 8px;font-size:15px;}
+  .ex p:last-child{margin-bottom:0}
+  .ex b{color:var(--navy)}
+
+  /* dialogue / script */
+  .script{background:var(--navy);color:#e6ecf4;border-radius:12px;padding:20px 22px;margin:16px 0;}
+  .script .who{color:var(--coral);font-weight:700;font-size:12.5px;letter-spacing:.5px;text-transform:uppercase;}
+  .script .line{margin:3px 0 14px;font-size:15px;}
+  .script .line:last-child{margin-bottom:0}
+  .script.bad{background:#4a2c30}
+  .script.bad .who{color:#ff9ba0}
+
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .cardA{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 6px 20px rgba(27,42,65,.05);}
+  .cardA .kh{font-family:Georgia,serif;font-weight:700;color:#fff;padding:12px 16px;border-radius:10px;margin:-4px -4px 14px;font-size:17px;}
+  .cardA .pill{display:inline-block;font-size:11px;font-weight:700;letter-spacing:1px;padding:4px 10px;border-radius:6px;margin-bottom:12px;}
+  .cardA p{font-size:14px;margin:0 0 10px;color:var(--ink)}
+  .cardA .ex2{font-size:12.5px;color:var(--muted);font-style:italic;margin:0;}
+
+  .quote{background:var(--navy);color:#fff;border-radius:16px;padding:34px 32px;margin-top:8px;}
+  .quote .q{font-family:Georgia,serif;font-size:64px;color:var(--coral);line-height:.5;height:32px;display:block;}
+  .quote p{font-family:Georgia,serif;font-style:italic;font-size:22px;margin:14px 0 12px;}
+  .quote .cap{color:var(--coral);font-size:13px;}
+
+  .tl{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:10px;}
+  .tl .step{text-align:center;position:relative;}
+  .tl .dot{width:52px;height:52px;border-radius:50%;background:var(--navy);color:#fff;font-family:Georgia,serif;font-weight:700;font-size:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;border:3px solid #fff;box-shadow:0 4px 12px rgba(27,42,65,.15);}
+  .tl .step.hot .dot{background:var(--coral)}
+  .tl .st{font-size:13px;font-weight:700;color:var(--navy);}
+  .tl .sd{font-size:11.5px;color:var(--muted);margin-top:3px;}
+  .tl .step:not(:last-child)::after{content:"";position:absolute;top:26px;left:60%;width:80%;height:2px;background:var(--line);z-index:-1;}
+  .callout{background:var(--coral-soft);border-radius:12px;padding:16px 20px;margin-top:22px;font-size:15px;}
+  .callout b{color:var(--coral)}
+
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .box{border-radius:14px;padding:24px;}
+  .box.light{background:#fff;border:1px solid var(--line);}
+  .box.dark{background:var(--navy);color:#d6e0ec;}
+  .box h3{font-size:19px;margin:0 0 10px;}
+  .box.light h3{color:var(--navy)} .box.dark h3{color:#fff}
+  .box p{margin:0;font-size:15px}
+
+  .triad{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .tcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 18px;text-align:center;}
+  .tcard .n{width:54px;height:54px;border-radius:50%;color:#fff;font-family:Georgia,serif;font-weight:700;font-size:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;}
+  .tcard h3{font-size:17px;color:var(--navy);margin:0 0 6px;}
+  .tcard p{font-size:13.5px;color:var(--ink);margin:0;}
+  .banner{background:var(--navy);color:#fff;text-align:center;border-radius:14px;padding:18px;margin-top:18px;font-size:16px;}
+  .banner b{color:var(--coral)}
+
+  .princ{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
+  .pc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 12px;text-align:center;}
+  .pc .n{width:42px;height:42px;border-radius:50%;color:#fff;font-family:Georgia,serif;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;}
+  .pc h4{font-family:Georgia,serif;font-size:14.5px;color:var(--navy);margin:0 0 6px;}
+  .pc p{font-size:11.5px;color:var(--ink);margin:0;line-height:1.4}
+
+  .errlist{list-style:none;padding:0;margin:6px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .errlist li{background:#fff;border:1px solid var(--line);border-radius:11px;padding:14px 16px 14px 42px;position:relative;font-size:14.5px}
+  .errlist li::before{content:"✕";position:absolute;left:15px;top:13px;width:18px;height:18px;background:var(--coral);color:#fff;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .errlist li b{color:var(--navy)}
+
+  .reg{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:12px;display:flex;}
+  .reg .rt{flex:none;width:36%;padding:18px;color:#fff;font-family:Georgia,serif;font-weight:700;font-size:16px;display:flex;align-items:center;}
+  .reg .rd{padding:18px;font-size:14px;color:var(--ink);display:flex;align-items:center;}
+
+  .doblock{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .do{border-radius:14px;padding:24px}
+  .do.y{background:#fff;border:1px solid var(--line)}
+  .do.n{background:var(--navy);color:#d6e0ec}
+  .do h3{display:flex;align-items:center;gap:10px;font-size:19px;margin:0 0 14px}
+  .do.y h3{color:var(--navy)} .do.n h3{color:#fff}
+  .do .ic{width:30px;height:30px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:none}
+  .do ul{margin:0;padding-left:0;list-style:none}
+  .do li{position:relative;padding-left:20px;margin-bottom:11px;font-size:14px}
+  .do li::before{content:"•";position:absolute;left:2px;color:var(--coral);font-weight:700}
+
+  /* mini case */
+  .case{background:#fff;border:1px solid var(--line);border-radius:16px;padding:0;overflow:hidden}
+  .case .ch{background:var(--navy);color:#fff;padding:20px 24px}
+  .case .ch h3{margin:0;font-size:20px}
+  .case .cb{padding:24px}
+  .case .stepline{display:flex;gap:14px;margin-bottom:16px}
+  .case .stepline:last-child{margin-bottom:0}
+  .case .cn{flex:none;width:26px;height:26px;border-radius:50%;background:var(--coral);color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+  .case .ct{font-size:15px}
+  .case .ct b{color:var(--navy)}
+
+  /* SUMMARY */
+  #resumo{background:var(--navy);color:#fff;}
+  #resumo .eyebrow{color:var(--coral)}
+  #resumo h2.sec{color:#fff}
+  #resumo p.lead{color:#aebfd3}
+  .sumgrid{display:grid;grid-template-columns:1.15fr 1fr;gap:20px;margin-top:8px;}
+  .sumcard{background:var(--navy2);border:1px solid #33475f;border-radius:16px;padding:26px;}
+  .sumcard h3{color:#fff;font-size:19px;margin:0 0 12px;display:flex;align-items:center;gap:10px}
+  .sumcard h3 .d{width:10px;height:10px;border-radius:50%;background:var(--coral)}
+  .sumcard p{color:#d3ddea;font-size:15px;margin:0 0 12px}
+  .sumcard ul{margin:0;padding-left:0;list-style:none}
+  .sumcard li{position:relative;padding-left:22px;margin-bottom:11px;color:#d3ddea;font-size:14.5px}
+  .sumcard li::before{content:"✓";position:absolute;left:0;color:var(--coral);font-weight:700}
+  .nextcard{background:linear-gradient(160deg,#F96167,#e0474d);border-radius:16px;padding:26px;color:#fff;}
+  .nextcard .lbl{font-size:11px;font-weight:700;letter-spacing:2px;opacity:.9}
+  .nextcard h3{font-family:Georgia,serif;font-size:22px;margin:8px 0 14px;color:#fff}
+  .nextcard li{position:relative;padding-left:22px;margin-bottom:10px;font-size:14px;list-style:none}
+  .nextcard ul{margin:0;padding:0}
+  .nextcard li::before{content:"→";position:absolute;left:0;font-weight:700}
+
+  /* PROVA + AVALIAÇÃO */
+  #prova{background:var(--tint)}
+  .qz{background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:0 6px 22px rgba(27,42,65,.06);}
+  .qz h2{color:var(--navy);font-size:26px;margin:0 0 6px}
+  label.field{display:block;margin-bottom:16px}
+  label.field .l{display:block;font-size:12px;font-weight:700;letter-spacing:1px;color:var(--coral);text-transform:uppercase;margin-bottom:7px}
+  input[type=text],textarea{width:100%;padding:13px 14px;font-size:16px;border:1px solid var(--line);border-radius:9px;background:var(--tint);font-family:inherit;color:var(--ink)}
+  textarea{min-height:74px;resize:vertical;font-size:15px}
+  input[type=text]:focus,textarea:focus{outline:none;border-color:var(--navy);background:#fff;box-shadow:0 0 0 3px rgba(27,42,65,.10)}
+  .row2{display:flex;gap:14px;flex-wrap:wrap}.row2 label.field{flex:1;min-width:210px}
+  .err{color:var(--coral);font-size:12.5px;margin-top:6px;font-weight:600;display:none}.err.show{display:block}
+  .btn{border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:15px;padding:14px 26px;border-radius:10px;background:var(--coral);color:#fff}
+  .btn:hover{filter:brightness(1.05)}.btn:focus-visible{outline:3px solid rgba(249,97,103,.45);outline-offset:2px}
+  .btn.ghost{background:transparent;color:var(--navy);border:1.5px solid var(--line)}
+  .actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:8px}
+  .hint{font-size:12.5px;color:var(--muted)}
+  .note{background:var(--navy);color:#d6e0ec;border-radius:11px;padding:16px 18px;font-size:13.5px;margin-top:18px}.note b{color:#fff}
+  .prog{margin:0 0 16px}
+  .pbar{height:8px;background:#e6ecf3;border-radius:6px;overflow:hidden}.pfill{height:100%;width:0;background:var(--coral);transition:width .25s}
+  .pmeta{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);margin-top:7px;font-weight:600}
+  .q{border-top:1px solid var(--line);padding:20px 0}
+  .qh{display:flex;gap:12px;margin-bottom:12px}
+  .qn{flex:none;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-family:Georgia,serif;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .qt{font-size:16px;font-weight:600;color:var(--navy);padding-top:3px}
+  .opt{display:flex;gap:11px;align-items:flex-start;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;margin-bottom:8px;cursor:pointer}
+  .opt:hover{border-color:#b9c6d6;background:#fafcfe}.opt.sel{border-color:var(--coral);background:var(--coral-soft)}
+  .opt input{margin-top:3px;accent-color:var(--coral);width:17px;height:17px;flex:none}
+  .opt .ot{font-size:14px;color:var(--ink)}
+  .q.miss .qt{color:var(--coral)}
+  .ring{width:140px;height:140px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none;position:relative}
+  .ring::before{content:"";position:absolute;inset:14px;background:#fff;border-radius:50%;z-index:0}
+  .ring .pct{position:relative;z-index:1;font-family:Georgia,serif;font-size:38px;font-weight:700;line-height:1}
+  .ring .rl{position:relative;z-index:1;font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-top:4px}
+  .scorewrap{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+  .badge{display:inline-block;font-weight:700;font-size:14px;padding:7px 16px;border-radius:8px}
+  .badge.ok{background:var(--green);color:#fff}.badge.no{background:var(--coral);color:#fff}
+  .review .ri{padding:12px 0;border-bottom:1px solid var(--line);font-size:14px;display:flex;gap:10px}.review .ri:last-child{border-bottom:none}
+  .mk{flex:none;width:22px;height:22px;border-radius:50%;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .mk.c{background:var(--green)}.mk.w{background:var(--coral)}
+  .review b{color:var(--navy)}.corr{color:var(--green);font-weight:600}
+  .hidden{display:none}
+
+  /* emoji satisfaction */
+  .emoji-row{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 2px}
+  .emoji{font-size:32px;background:#fff;border:2px solid var(--line);border-radius:14px;padding:9px 13px;cursor:pointer;line-height:1;transition:transform .1s,border-color .1s,background .1s}
+  .emoji:hover{transform:translateY(-2px)}
+  .emoji.sel{border-color:var(--coral);background:var(--coral-soft);transform:translateY(-3px) scale(1.05)}
+  .emoji-label{font-size:14px;color:var(--navy);font-weight:700;min-height:20px;margin-top:8px}
+  .counter{font-size:12px;color:var(--muted);text-align:right;margin-top:5px}
+  .nps-row{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 4px}
+  .nps-btn{width:44px;height:44px;border-radius:9px;border:none;color:#fff;font-weight:700;font-size:15px;cursor:pointer;font-family:inherit;transition:transform .1s}
+  .nps-btn:hover{transform:translateY(-2px)}
+  .nps-btn.sel{outline:3px solid var(--navy);outline-offset:2px;transform:translateY(-2px) scale(1.06)}
+  .nps-scale{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);max-width:526px;margin-top:2px}
+  .thanks{text-align:center;padding:14px 6px}
+  .thanks .big{font-size:58px;line-height:1;margin-bottom:8px}
+  .thanks h2{color:var(--navy);font-size:28px;margin:0 0 8px}
+
+  footer{background:var(--navy);color:#8fa0b6;text-align:center;padding:26px 20px;font-size:12.5px}
+
+  @media(max-width:720px){
+    .cards3,.triad,.princ,.tl,.twocol,.doblock,.sumgrid,.errlist{grid-template-columns:1fr}
+    .tl .step:not(:last-child)::after{display:none}
+    .tl{gap:16px}
+    .reg{flex-direction:column}.reg .rt{width:100%}
+    section{padding:46px 18px}
+    #hero .ring1{width:280px;height:280px;right:-90px;top:-90px}
+  }
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+
+<!-- HERO -->
+<header id="hero">
+  <div class="ring1"></div><div class="ring2"></div>
+  <div class="h-inner">
+    <span class="eyebrow">Módulo 07</span>
+    <h1>A primeira impressão: da captação ao onboarding</h1>
+    <p class="sub">Antes de tudo o que você já aprendeu, existe um primeiro encontro — e ele define o resto.</p>
+    <div class="meta">
+      <span class="chip">⏱ <b>~40 min</b></span>
+      <span class="chip">Formato <b>aula interativa</b></span>
+      <span class="chip">Ao final, <b>prova + avaliação</b></span>
+    </div>
+    <div class="scrollcue">↓ Role para começar</div>
+  </div>
+</header>
+
+<!-- OBJETIVOS -->
+<section>
+  <div class="inner reveal">
+    <span class="eyebrow">Objetivos</span>
+    <h2 class="sec">O que você vai aprender</h2>
+    <p class="lead">Ao terminar este módulo, você será capaz de:</p>
+    <div class="twocol">
+      <div class="box light"><p>▸ Entender por que a <b>primeira impressão</b> define toda a relação.</p></div>
+      <div class="box light"><p>▸ Reconhecer <b>como o cliente chega</b> e cuidar de cada porta de entrada.</p></div>
+      <div class="box light"><p>▸ Conduzir a <b>primeira consulta</b> e a conversão em contrato com ética.</p></div>
+      <div class="box light"><p>▸ Fazer um <b>onboarding</b> que acolhe e alinha expectativas desde o dia um.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- POR QUE -->
+<section style="background:#fff">
+  <div class="inner reveal">
+    <span class="eyebrow">Por que isso importa</span>
+    <h2 class="sec">Você nunca tem uma segunda chance de causar a primeira impressão</h2>
+    <p class="body">Toda a trilha até aqui tratou do cliente que já está dentro do escritório. Mas existe um momento anterior a tudo isso — o <b>primeiro contato</b> — que define o tom de toda a relação. É nele que o cliente decide, muitas vezes em segundos, se confia ou não. E confiança, no jurídico, é o produto.</p>
+    <p class="body">A primeira impressão tem um peso desproporcional por causa de um fenômeno conhecido como <b>efeito de primazia</b>: o que sentimos primeiro colore tudo o que vem depois. Um bom começo faz o cliente interpretar os tropeços seguintes com boa vontade; um mau começo faz o oposto — ele passa a reparar em cada falha.</p>
+    <div class="ex">
+      <span class="xl">📊 O que dizem os dados</span>
+      <p>Estudos de psicologia mostram que formamos uma primeira impressão em <b>uma fração de segundo</b>: em experimentos da Universidade de Princeton (Willis e Todorov, 2006), bastaram cerca de <b>100 milissegundos</b> de exposição a um rosto para as pessoas julgarem traços como confiabilidade. No atendimento, isso significa que o cliente já está formando opinião antes mesmo de você terminar a primeira frase.</p>
+    </div>
+    <div class="ex">
+      <span class="xl">Na prática</span>
+      <p>A primeira impressão do escritório não é só a consulta. É o site que ele achou, o tempo que levou para ser respondido no WhatsApp, o jeito como foi recebido na recepção, o tom da primeira mensagem. Quando o cliente chega à consulta, ele já tem uma opinião parcialmente formada — cabe a você confirmá-la ou revertê-la.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CANAIS -->
+<section>
+  <div class="inner reveal">
+    <span class="eyebrow">A porta de entrada</span>
+    <h2 class="sec">Como o cliente chega</h2>
+    <p class="body">Antes de cuidar da primeira impressão, é preciso saber por <b>onde</b> o cliente entra. Cada canal traz um cliente com uma expectativa diferente, e mapear a origem ajuda a acolher melhor. As portas mais comuns num escritório são a <b>indicação</b>, a <b>busca no Google</b>, as <b>redes sociais</b> e a <b>procura direta</b> (o cliente que já conhecia o escritório).</p>
+    <p class="body">Dentre todas, a indicação é a mais valiosa — e vale entender por quê, com números:</p>
+    <div class="ex">
+      <span class="xl">📊 Por que a indicação vale mais</span>
+      <p>▸ Cerca de <b>84%</b> das pessoas confiam mais na indicação de amigos e familiares do que em qualquer propaganda (Nielsen, 2013).</p>
+      <p>▸ Um estudo com cerca de 10 mil clientes de um banco, ao longo de quase três anos (Schmitt, Skiera e Van den Bulte, <i>Journal of Marketing</i>, 2011), constatou que clientes que chegam por <b>indicação</b> valem, em média, <b>pelo menos 16% mais</b> e permanecem mais tempo do que os demais. O motivo é intuitivo: eles chegam pré-qualificados, já confiando, apresentados por alguém em quem confiam.</p>
+      <p>Ou seja: o cliente indicado começa a relação com um crédito de confiança. Desperdiçá-lo com uma entrada desleixada é jogar fora o ativo mais barato e valioso do escritório.</p>
+    </div>
+    <div class="callout"><b>Atenção à ética:</b> atrair clientes é permitido (publicidade e conteúdo, dentro do Provimento 205/2021 da OAB), mas <b>captação indevida</b> — abordar diretamente quem está numa situação vulnerável, oferecer serviços de forma mercantil — não é. A boa primeira impressão nasce da confiança que você constrói, nunca da abordagem que você força.</p></div>
+  </div>
+</section>
+
+<!-- CONSULTA -->
+<section style="background:#fff">
+  <div class="inner reveal">
+    <span class="eyebrow">O momento decisivo</span>
+    <h2 class="sec">A primeira consulta</h2>
+    <p class="body">A primeira consulta é onde a confiança se ganha ou se perde. E o mais importante: o cliente, nesse momento, quase não avalia a sua técnica — ele avalia como <b>se sentiu</b>. Foi ouvido? Entendeu o que foi dito? Sentiu que está em boas mãos? Foi respeitado no tempo dele?</p>
+    <p class="body">Quatro elementos definem uma boa primeira consulta: <b>acolhimento</b> (receber sem pressa e sem frieza), <b>escuta</b> (deixar o cliente contar a história antes de interromper com a técnica), <b>clareza</b> (explicar em linguagem simples o que é possível) e <b>honestidade</b> (não prometer o que não se pode cumprir).</p>
+    <div class="script">
+      <div class="who">✓ Abrindo bem a primeira consulta</div>
+      <div class="line">"Seja muito bem-vindo(a). Antes de qualquer coisa, me conta com suas palavras o que te trouxe aqui e o que mais te preocupa nisso tudo — quero entender bem a sua situação antes de falar da parte jurídica."</div>
+    </div>
+    <p class="body">Repare: essa abertura acolhe, convida à escuta e sinaliza que a pessoa vem antes do processo. É o oposto de começar despejando artigos de lei.</p>
+  </div>
+</section>
+
+<!-- CONVERSÃO -->
+<section>
+  <div class="inner reveal">
+    <span class="eyebrow">Da consulta ao contrato</span>
+    <h2 class="sec">Converter com ética e transparência</h2>
+    <p class="body">Transformar uma consulta em contrato é legítimo e necessário — o escritório vive disso. O que muda é o <b>como</b>. A conversão saudável não vem da pressão nem da promessa de vitória; vem da <b>clareza</b>: o cliente entende o que será feito, quais são as chances realistas, quanto custa e por quê. Quem decide com informação decide melhor — e reclama menos depois.</p>
+    <p class="body">Três cuidados tornam a conversão ética e ainda aumentam a taxa de fechamento, porque geram confiança: alinhar <b>expectativa realista</b> (obrigação de meio, nunca garantia de resultado), explicar os <b>honorários com transparência</b> (sem letras miúdas) e dar <b>espaço para o cliente decidir</b> sem se sentir empurrado.</p>
+    <div class="script">
+      <div class="who">✓ Falando de honorários e chances sem prometer</div>
+      <div class="line">"Vou te explicar como funcionam os honorários, para não ter surpresa nenhuma. E, sobre o caso: pela análise, as chances são [x], mas o resultado final depende do juiz e das provas. O que eu garanto é trabalho técnico e transparência do começo ao fim. Fique à vontade para pensar antes de decidir."</div>
+    </div>
+    <div class="ex">
+      <span class="xl">📊 Por que vale caprichar na entrada</span>
+      <p>Conquistar um cliente novo custa de <b>5 a 25 vezes mais</b> do que manter um atual (Harvard Business Review) — uma regra de bolso, não número exato. Ou seja: cada consulta que chega já custou caro para acontecer. Convertê-la bem (e com ética) é aproveitar um investimento que já foi feito.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ONBOARDING -->
+<section style="background:#fff">
+  <div class="inner reveal">
+    <span class="eyebrow">Os primeiros dias</span>
+    <h2 class="sec">Onboarding: as primeiras duas semanas definem tudo</h2>
+    <p class="body">Fechado o contrato, começa um período crítico e quase sempre negligenciado: o <b>onboarding</b> — os primeiros dias do cliente dentro do escritório. É aqui que a euforia da contratação pode virar segurança (se ele for bem conduzido) ou a primeira dúvida ("será que fiz a escolha certa?", se ele for deixado no vácuo).</p>
+    <p class="body">Um bom onboarding jurídico faz quatro coisas logo no início: <b>dá as boas-vindas</b> (uma mensagem calorosa reforçando que ele fez uma boa escolha), <b>explica os próximos passos</b> (o que vai acontecer agora, sem juridiquês), <b>alinha os canais e prazos</b> (por onde falar e de quanto em quanto tempo ele terá notícias) e <b>define o que se espera dele</b> (documentos, informações — ou, muitas vezes, nada por enquanto).</p>
+    <div class="script">
+      <div class="who">✓ Mensagem de boas-vindas</div>
+      <div class="line">"Que bom ter você conosco! A partir de agora, seu caso está sendo cuidado pela nossa equipe. O próximo passo é [x]. Vou te manter informado a cada etapa — pode falar comigo por aqui sempre que precisar. Seja bem-vindo(a)!"</div>
+    </div>
+    <p class="body">Esse cuidado inicial planta a semente de tudo o que a trilha ensinou: comunicação clara, proatividade e expectativa alinhada, desde o primeiro dia.</p>
+  </div>
+</section>
+
+<!-- FERRAMENTA -->
+<section>
+  <div class="inner reveal">
+    <span class="eyebrow">A ferramenta</span>
+    <h2 class="sec">O checklist da primeira impressão</h2>
+    <p class="body">Uma forma simples de garantir que nenhuma porta de entrada esteja "suja": passe esta lista de tempos em tempos, olhando com os olhos de quem chega pela primeira vez.</p>
+    <div class="cards3">
+      <div class="box light"><p><b>Resposta rápida:</b> quanto tempo leva para um novo contato ser respondido?</p></div>
+      <div class="box light"><p><b>Recepção:</b> quem chega é recebido com atenção e sem espera desnecessária?</p></div>
+      <div class="box light"><p><b>Escuta na consulta:</b> o cliente fala antes de ouvir juridiquês?</p></div>
+      <div class="box light"><p><b>Clareza de honorários:</b> o valor e as condições são explicados sem surpresa?</p></div>
+      <div class="box light"><p><b>Expectativa alinhada:</b> ficou claro que é obrigação de meio, sem promessa?</p></div>
+      <div class="box light"><p><b>Boas-vindas:</b> o cliente recém-fechado recebe acolhimento e próximos passos?</p></div>
+    </div>
+    <div class="callout" style="margin-top:20px"><b>Como usar:</b> qualquer item que falhe é uma trinca na primeira impressão. Corrigi-los custa pouco e muda a percepção de todos os novos clientes de uma vez.</div>
+  </div>
+</section>
+
+<!-- ERROS -->
+<section style="background:#fff">
+  <div class="inner reveal">
+    <span class="eyebrow">Sinais de alerta</span>
+    <h2 class="sec">Erros na entrada do cliente</h2>
+    <ul class="errlist">
+      <li><b>Demorar para responder o primeiro contato.</b> A confiança esfria antes de começar.</li>
+      <li><b>Falar mais que ouvir na consulta.</b> O cliente não se sente compreendido.</li>
+      <li><b>Prometer resultado para fechar.</b> Ganha o contrato, perde a confiança depois.</li>
+      <li><b>Honorários pouco claros.</b> Surpresa financeira vira ressentimento.</li>
+      <li><b>Sumir logo após a assinatura.</b> O silêncio inicial gera a primeira dúvida.</li>
+      <li><b>Desperdiçar a indicação.</b> Tratar mal quem chegou pré-confiando é o pior desperdício.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- CASO -->
+<section>
+  <div class="inner reveal">
+    <span class="eyebrow">Do começo ao fim</span>
+    <h2 class="sec">A entrada que conquistou antes do resultado</h2>
+    <div class="case">
+      <div class="ch"><h3>Do primeiro contato ao contrato — com cuidado</h3></div>
+      <div class="cb">
+        <div class="stepline"><div class="cn">1</div><div class="ct">Uma cliente chega por indicação, insegura, e manda uma mensagem no fim do dia. Em <b>poucos minutos</b>, recebe uma resposta acolhedora marcando a consulta.</div></div>
+        <div class="stepline"><div class="cn">2</div><div class="ct">Na consulta, é <b>ouvida com calma</b> antes de qualquer termo técnico. Entende, em linguagem simples, o que é possível e o que não é.</div></div>
+        <div class="stepline"><div class="cn">3</div><div class="ct">Os honorários são explicados com <b>total transparência</b>, sem promessa de vitória. Ela decide sem pressão — e fecha, confiante.</div></div>
+        <div class="stepline"><div class="cn">4</div><div class="ct">No dia seguinte, recebe uma <b>mensagem de boas-vindas</b> com os próximos passos. Antes de qualquer decisão no processo, ela já se sente em boas mãos — e já elogia o escritório para a amiga que indicou.</div></div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:20px"><b>A lição:</b> a primeira impressão bem cuidada conquista o cliente antes mesmo do primeiro resultado — e prepara o terreno para tudo o que vem depois.</div>
+  </div>
+</section>
+
+<!-- RESUMO -->
+<section id="resumo">
+  <div class="inner reveal">
+    <span class="eyebrow">Resumo do módulo</span>
+    <h2 class="sec">Fechando o Módulo 07</h2>
+    <p class="lead">Uma última passada por tudo o que você viu — e um aperitivo do que vem a seguir.</p>
+    <div class="sumgrid">
+      <div class="sumcard">
+        <h3><span class="d"></span> O que você viu</h3>
+        <p>Antes de todo o relacionamento, existe um <b style="color:#fff">primeiro encontro</b> — e ele define o tom de tudo. Pelo efeito de primazia, a primeira impressão colore cada experiência seguinte, e o cliente a forma em segundos.</p>
+        <p>Cuidar da <b style="color:#fff">porta de entrada</b> (com atenção especial à indicação, que vale mais), conduzir a <b style="color:#fff">primeira consulta</b> com escuta e clareza, converter com <b style="color:#fff">ética e transparência</b> e fazer um <b style="color:#fff">onboarding</b> acolhedor é o que transforma um curioso num cliente confiante desde o dia um.</p>
+        <h3 style="margin-top:22px"><span class="d"></span> Principais pontos</h3>
+        <ul>
+          <li>A primeira impressão se forma em segundos e pesa sobre todo o resto.</li>
+          <li>Mapeie as portas de entrada; a indicação é a mais valiosa.</li>
+          <li>Na primeira consulta, o cliente avalia como se sentiu, não a técnica.</li>
+          <li>Converta com expectativa realista e honorários transparentes — sem promessa.</li>
+          <li>O onboarding dos primeiros dias define a percepção do cliente.</li>
+          <li>Atrair é permitido; captar de forma indevida, não (OAB).</li>
+        </ul>
+      </div>
+      <div class="nextcard">
+        <span class="lbl">A SEGUIR</span>
+        <h3>Módulo 08 — Gestão de crises e reclamações</h3>
+        <ul>
+          <li>O que fazer quando algo <b>dá errado</b> — e por que isso define a relação.</li>
+          <li>O <b>paradoxo da recuperação</b>: um problema bem resolvido pode fidelizar mais.</li>
+          <li>Método para conduzir reclamações e a conversa difícil.</li>
+          <li>Como responder a uma avaliação negativa dentro da ética.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROVA + AVALIAÇÃO -->
+<section id="prova">
+  <div class="inner reveal">
+    <span class="eyebrow">Avaliação</span>
+    <h2 class="sec" style="color:var(--navy)">Prova do módulo</h2>
+    <p class="lead">10 questões · aprovação a partir de 70%. Ao final, uma rápida avaliação do conteúdo.</p>
+
+    <!-- id -->
+    <div class="qz" id="q-id">
+      <h2 class="serif">Identifique-se</h2>
+      <p class="hint" style="margin:0 0 18px">Seus dados vinculam a nota ao seu registro de evolução na trilha.</p>
+      <label class="field"><span class="l">Nome completo</span>
+        <input type="text" id="nome" autocomplete="name" placeholder="Ex.: Maria Silva de Souza">
+        <div class="err" id="e-nome">Informe seu nome completo (nome e sobrenome).</div></label>
+      <div class="row2">
+        <label class="field"><span class="l">E-mail corporativo</span>
+          <input type="text" id="email" inputmode="email" autocomplete="email" placeholder="nome@empresa.com.br">
+          <div class="err" id="e-email">Informe um e-mail válido.</div></label>
+        <label class="field"><span class="l">Unidade / equipe</span>
+          <input type="text" id="uni" placeholder="Ex.: Unidade Amazonas · Nicolas Gomes">
+          <div class="err" id="e-uni">Informe sua unidade ou equipe.</div></label>
+      </div>
+      <div class="actions"><button class="btn" id="start">Iniciar prova</button>
+        <span class="hint">10 questões · ~5 min</span></div>
+      <div class="note"><b>Por que pedimos o e-mail?</b> Para registrar quem concluiu cada módulo e vincular sua nota ao seu histórico na trilha. Usamos o mínimo necessário, com acesso restrito — o mesmo princípio da LGPD que este curso ensina.</div>
+    </div>
+
+    <!-- quiz -->
+    <div class="qz hidden" id="q-quiz">
+      <div class="prog"><div class="pbar"><div class="pfill" id="pfill"></div></div>
+        <div class="pmeta"><span id="who"></span><span id="pc">0 de 10 respondidas</span></div></div>
+      <div id="qs"></div>
+      <div class="actions" style="border-top:1px solid var(--line);padding-top:18px">
+        <button class="btn" id="finish">Finalizar prova</button>
+        <span class="hint" id="fh">Responda todas as questões para finalizar.</span></div>
+    </div>
+
+    <!-- result -->
+    <div class="qz hidden" id="q-res">
+      <div class="scorewrap">
+        <div class="ring" id="ring"><span class="pct" id="pct">0%</span><span class="rl">acertos</span></div>
+        <div><div id="badge" class="badge ok">Aprovado</div>
+          <h2 class="serif" id="rtitle" style="margin:10px 0 4px">Resultado</h2>
+          <p class="hint" id="rsub" style="margin:0;font-size:15px"></p></div>
+      </div>
+      <div class="actions" style="margin-top:22px">
+        <button class="btn" id="toEval">Avaliar este módulo →</button>
+        <button class="btn ghost" id="retry">Refazer prova</button></div>
+      <div class="review" id="review" style="margin-top:22px"></div>
+    </div>
+
+    <!-- satisfação -->
+    <div class="qz hidden" id="q-eval">
+      <h2 class="serif">Avaliação do módulo</h2>
+      <p class="hint" style="margin:0 0 22px">Três perguntas rápidas — elas nos ajudam a melhorar o material para você e para os próximos.</p>
+
+      <label class="field">
+        <span class="l">1. Esse conteúdo fez sentido para você?</span>
+        <textarea id="sentido" maxlength="150" placeholder="Escreva livremente o que achou (até 150 caracteres)."></textarea>
+        <div class="counter"><span id="cc">0</span>/150</div>
+      </label>
+
+      <div class="field">
+        <span class="l">2. Qual o seu nível de satisfação?</span>
+        <div class="emoji-row" id="emojis">
+          <button type="button" class="emoji" data-v="1" data-label="Muito insatisfeito" aria-label="Muito insatisfeito">😞</button>
+          <button type="button" class="emoji" data-v="2" data-label="Insatisfeito" aria-label="Insatisfeito">🙁</button>
+          <button type="button" class="emoji" data-v="3" data-label="Neutro" aria-label="Neutro">😐</button>
+          <button type="button" class="emoji" data-v="4" data-label="Satisfeito" aria-label="Satisfeito">🙂</button>
+          <button type="button" class="emoji" data-v="5" data-label="Muito satisfeito" aria-label="Muito satisfeito">😄</button>
+        </div>
+        <div class="emoji-label" id="emojiLabel"></div>
+        <div class="err" id="e-emoji">Escolha uma figurinha para continuar.</div>
+      </div>
+
+      <div class="field">
+        <span class="l">3. De 0 a 10, o quanto você recomendaria este módulo?</span>
+        <div class="nps-row" id="nps"></div>
+        <div class="nps-scale"><span>0 · nada provável</span><span>muito provável · 10</span></div>
+        <div class="err" id="e-nps">Escolha uma nota de 0 a 10.</div>
+      </div>
+
+      <div class="actions" style="margin-top:6px">
+        <button class="btn" id="sendEval">Enviar avaliação</button>
+      </div>
+    </div>
+
+    <!-- agradecimento -->
+    <div class="qz hidden" id="q-thanks">
+      <div class="thanks">
+        <div class="big">🙌</div>
+        <h2 class="serif">Obrigado pela sua avaliação!</h2>
+        <p class="hint" style="font-size:15px;max-width:34em;margin:0 auto 4px">Sua opinião ajuda a LEX a entregar um material cada vez melhor. Sua nota e avaliação foram registradas na trilha.</p>
+      </div>
+      <div class="actions" style="justify-content:center;margin-top:18px">
+        <a class="btn ghost" href="index.html">Voltar para a trilha →</a>
+      </div>
+      <p class="hint" style="text-align:center;margin-top:16px">O <b>Módulo 08 — Gestão de crises e reclamações</b> é o próximo passo da sua trilha.</p>
+    </div>
+  </div>
+</section>
+
+<footer>LEX · Backoffice para Escritórios Jurídicos · Trilha de Formação em Experiência do Cliente</footer>
+
+<script>
+const bar=document.getElementById('bar');
+addEventListener('scroll',()=>{const h=document.documentElement;const p=h.scrollTop/(h.scrollHeight-h.clientHeight);bar.style.width=(p*100)+'%';},{passive:true});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+const QUESTIONS=[
+ {q:"Por que a primeira impressão tem tanto peso na relação?",o:["Porque é a única coisa que o cliente avalia.","Pelo efeito de primazia: o que se sente primeiro colore tudo o que vem depois.","Porque define o resultado do processo.","Porque a OAB exige."],a:1},
+ {q:"Segundo estudos de psicologia, uma primeira impressão se forma:",o:["Depois de várias reuniões.","Em uma fração de segundo (cerca de 100 milissegundos).","Só após o primeiro resultado.","Ao assinar o contrato."],a:1},
+ {q:"Entre os canais de entrada, a indicação é especialmente valiosa porque:",o:["É a mais barata de anunciar.","O cliente chega pré-qualificado e confiando, e tende a valer mais e ficar mais.","Não exige atendimento.","Dispensa contrato."],a:1},
+ {q:"Na primeira consulta, o cliente avalia principalmente:",o:["A qualidade técnica da tese.","Como se sentiu: se foi ouvido, entendeu e se sentiu em boas mãos.","O tamanho do escritório.","O número de processos ganhos."],a:1},
+ {q:"Converter uma consulta em contrato com ética significa:",o:["Prometer a vitória para fechar.","Pressionar o cliente a decidir na hora.","Dar clareza sobre chances e honorários, sem promessa de resultado.","Esconder os custos."],a:2},
+ {q:"O onboarding jurídico é:",o:["A fase final do processo.","Os primeiros dias do cliente no escritório, que definem a percepção dele.","Um documento do tribunal.","A cobrança de honorários."],a:1},
+ {q:"Uma boa mensagem de boas-vindas ao novo cliente deve:",o:["Listar todos os artigos de lei do caso.","Acolher, reforçar a boa escolha e explicar os próximos passos.","Cobrar documentos com urgência.","Prometer prazo de vitória."],a:1},
+ {q:"Sobre a ética na captação (OAB), é correto dizer:",o:["Toda forma de atrair cliente é proibida.","Atrair com publicidade e conteúdo é permitido; captar de forma indevida, não.","Pode-se prometer resultado em anúncios.","A publicidade é totalmente livre."],a:1},
+ {q:"Desperdiçar um cliente que chegou por indicação é grave porque:",o:["Indicação não tem valor.","Joga fora o ativo mais barato e confiável do escritório.","Aumenta os honorários.","Não afeta a reputação."],a:1},
+ {q:"O checklist da primeira impressão serve para:",o:["Substituir a consulta.","Revisar cada porta de entrada com os olhos de quem chega pela primeira vez.","Avaliar o juiz.","Definir o resultado do caso."],a:1}
+];
+// ===== Cole aqui a URL do Web App do Google (termina em /exec). Enquanto vazio, o site funciona e o aluno baixa o CSV como backup. =====
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbx278npWP65rs8QvXVByDzjm9hbojhVeMt4-algK9FG4zZuBNFSQDwPoXTIiFbDDKzEGA/exec";
+
+const PASS=70;const answers=new Array(QUESTIONS.length).fill(null);let learner={};let evalData={sentido:'',satisf:null,satisfLabel:'',recomendaria:null};
+const $=s=>document.querySelector(s);
+function validEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((v||'').trim());}
+function er(id,show){$('#'+id).classList.toggle('show',show);}
+
+$('#start').addEventListener('click',()=>{
+ const nome=$('#nome').value.trim(),email=$('#email').value.trim(),uni=$('#uni').value.trim();let ok=true;
+ const nOk=nome.split(/\s+/).filter(Boolean).length>=2;er('e-nome',!nOk);if(!nOk)ok=false;
+ const eOk=validEmail(email);er('e-email',!eOk);if(!eOk)ok=false;
+ const uOk=uni.length>=2;er('e-uni',!uOk);if(!uOk)ok=false;if(!ok)return;
+ learner={nome,email,unidade:uni};$('#who').textContent=nome+' · '+email;
+ build();$('#q-id').classList.add('hidden');$('#q-quiz').classList.remove('hidden');
+ $('#prova').scrollIntoView({behavior:'smooth'});
+});
+function build(){const c=$('#qs');c.innerHTML='';
+ QUESTIONS.forEach((it,qi)=>{const card=document.createElement('div');card.className='q';card.id='q'+qi;
+  card.innerHTML='<div class="qh"><div class="qn">'+(qi+1)+'</div><div class="qt">'+it.q+'</div></div>';
+  it.o.forEach((opt,oi)=>{const lab=document.createElement('label');lab.className='opt';
+   const inp=document.createElement('input');inp.type='radio';inp.name='q'+qi;inp.value=oi;
+   inp.addEventListener('change',()=>{answers[qi]=oi;card.classList.remove('miss');
+    [...card.querySelectorAll('.opt')].forEach(o=>o.classList.remove('sel'));lab.classList.add('sel');prog();});
+   const t=document.createElement('span');t.className='ot';t.textContent=opt;
+   lab.appendChild(inp);lab.appendChild(t);card.appendChild(lab);});
+  c.appendChild(card);});prog();}
+function prog(){const d=answers.filter(a=>a!==null).length;
+ $('#pc').textContent=d+' de '+QUESTIONS.length+' respondidas';
+ $('#pfill').style.width=(d/QUESTIONS.length*100)+'%';
+ $('#fh').textContent=d===QUESTIONS.length?'Tudo respondido — pode finalizar.':'Responda todas as questões para finalizar.';}
+$('#finish').addEventListener('click',()=>{const miss=answers.map((a,i)=>a===null?i:-1).filter(i=>i>=0);
+ if(miss.length){miss.forEach(i=>$('#q'+i).classList.add('miss'));
+  document.getElementById('q'+miss[0]).scrollIntoView({behavior:'smooth',block:'center'});return;}res();});
+function res(){let ok=0;answers.forEach((a,i)=>{if(a===QUESTIONS[i].a)ok++;});
+ const pct=Math.round(ok/QUESTIONS.length*100),pass=pct>=PASS;
+ $('#pct').textContent=pct+'%';const col=pass?'var(--green)':'var(--coral)';
+ $('#ring').style.background='conic-gradient('+col+' '+pct+'%, #e6ecf3 0)';$('#pct').style.color=col;
+ const b=$('#badge');b.textContent=pass?'Aprovado':'Não aprovado';b.className='badge '+(pass?'ok':'no');
+ $('#rtitle').textContent=pass?'Módulo concluído!':'Quase lá';
+ $('#rsub').textContent=ok+' de '+QUESTIONS.length+' corretas · '+(pass?'nota suficiente para liberar o Módulo 08.':'você precisa de 70% (7 acertos). Revise e refaça.');
+ const rv=$('#review');rv.innerHTML='<h3 class="serif" style="font-size:19px;color:var(--navy);margin:0 0 10px">Revisão</h3>';
+ QUESTIONS.forEach((it,i)=>{const okq=answers[i]===it.a;const d=document.createElement('div');d.className='ri';
+  let h='<div class="mk '+(okq?'c':'w')+'">'+(okq?'✓':'✕')+'</div><div><b>'+(i+1)+'. '+it.q+'</b><br>Sua resposta: '+it.o[answers[i]];
+  if(!okq)h+='<br><span class="corr">Correta: '+it.o[it.a]+'</span>';h+='</div>';d.innerHTML=h;rv.appendChild(d);});
+ window._r={ok,total:QUESTIONS.length,pct,pass,when:new Date()};
+ $('#q-quiz').classList.add('hidden');$('#q-res').classList.remove('hidden');
+ $('#prova').scrollIntoView({behavior:'smooth'});}
+$('#retry').addEventListener('click',()=>{answers.fill(null);$('#q-res').classList.add('hidden');
+ $('#q-quiz').classList.remove('hidden');build();$('#prova').scrollIntoView({behavior:'smooth'});});
+
+// ir para avaliação
+$('#toEval').addEventListener('click',()=>{
+ $('#q-res').classList.add('hidden');$('#q-eval').classList.remove('hidden');
+ $('#prova').scrollIntoView({behavior:'smooth'});});
+
+// contador de caracteres
+$('#sentido').addEventListener('input',e=>{$('#cc').textContent=e.target.value.length;});
+
+// emojis
+document.querySelectorAll('#emojis .emoji').forEach(btn=>{
+ btn.addEventListener('click',()=>{
+  document.querySelectorAll('#emojis .emoji').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  evalData.satisf=+btn.dataset.v;evalData.satisfLabel=btn.dataset.label;
+  $('#emojiLabel').textContent=btn.dataset.label;er('e-emoji',false);});
+});
+
+// NPS 0-10 (padrão G4)
+(function(){var row=$('#nps');if(!row)return;for(var i=0;i<=10;i++){(function(v){
+ var b=document.createElement('button');b.type='button';b.className='nps-btn';b.textContent=v;b.dataset.v=v;
+ b.style.background = v<=6 ? '#E5484D' : (v<=8 ? '#E8A400' : '#2E9E7B');
+ b.addEventListener('click',function(){
+  document.querySelectorAll('#nps .nps-btn').forEach(function(x){x.classList.remove('sel');});
+  b.classList.add('sel');evalData.recomendaria=v;er('e-nps',false);});
+ row.appendChild(b);})(i);}})();
+
+// enviar avaliação
+$('#sendEval').addEventListener('click',()=>{
+ var okv=true;
+ if(!evalData.satisf){er('e-emoji',true);okv=false;}
+ if(evalData.recomendaria===null){er('e-nps',true);okv=false;}
+ if(!okv)return;
+ evalData.sentido=$('#sentido').value.trim();
+ var r=window._r||{};
+ sendToSheet({nome:learner.nome,email:learner.email,unidade:learner.unidade,
+  modulo:'Módulo 07 - Primeira impressão',acertos:r.ok,total:r.total,percentual:(r.pct||0)+'%',
+  situacao:r.pass?'Aprovado':'Não aprovado',fezSentido:evalData.sentido||'-',
+  satisfacao:evalData.satisf,satisfacaoLabel:evalData.satisfLabel,recomendaria:evalData.recomendaria});
+ $('#q-eval').classList.add('hidden');$('#q-thanks').classList.remove('hidden');
+ $('#prova').scrollIntoView({behavior:'smooth'});});
+function sendToSheet(payload){
+ if(!ENDPOINT||ENDPOINT.indexOf('http')!==0)return;
+ try{fetch(ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});}
+ catch(e){}
+}
+</script>
+</body>
+</html>
