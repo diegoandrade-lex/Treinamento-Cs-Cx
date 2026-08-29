@@ -60,6 +60,56 @@
 
 <main>
   <p class="lead">Seis módulos, do conceito à prática. Cada módulo traz conteúdo, resumo e uma prova com certificação. Comece pelo início.</p>
+  <!-- ===== BARRA DE PROGRESSO DA TRILHA (colar no index.html, logo antes da lista de cards) ===== -->
+<div id="lex-progress" style="max-width:1000px;margin:0 auto 22px;padding:0 20px;">
+  <div style="background:#fff;border:1px solid #DCE3EC;border-radius:16px;padding:20px 24px;box-shadow:0 8px 24px rgba(27,42,65,.06);">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px;">
+      <span style="font-family:Georgia,'Times New Roman',serif;color:#1B2A41;font-size:19px;font-weight:700;">Seu progresso na trilha</span>
+      <span id="lex-prog-count" style="font-size:12.5px;font-weight:700;letter-spacing:1px;color:#F96167;text-transform:uppercase;">0 de 8 concluídos</span>
+    </div>
+    <div style="height:14px;background:#eef2f7;border-radius:9px;overflow:hidden;">
+      <div id="lex-prog-fill" style="height:100%;width:0%;background:linear-gradient(90deg,#F96167,#1B2A41);border-radius:9px;transition:width .6s ease;"></div>
+    </div>
+    <p id="lex-prog-msg" style="margin:11px 0 0;font-size:13.5px;color:#6B7A90;"></p>
+  </div>
+</div>
+<script>
+(function(){
+  function run(){
+    var TOTAL=8, K='lex_trilha_cscx';
+    var P={}; try{ P=JSON.parse(localStorage.getItem(K)||'{}'); }catch(e){ P={}; }
+    var done=0; for(var i=1;i<=TOTAL;i++){ if(P[i]) done++; }
+    var pct=Math.round(done/TOTAL*100);
+    var fill=document.getElementById('lex-prog-fill');
+    var cnt=document.getElementById('lex-prog-count');
+    var msg=document.getElementById('lex-prog-msg');
+    if(fill) setTimeout(function(){ fill.style.width=pct+'%'; },100);
+    if(cnt) cnt.textContent=done+' de '+TOTAL+' concluídos';
+    if(msg){
+      if(done===0) msg.textContent='Comece pelo Módulo 01 — cada módulo que você concluir aparece aqui.';
+      else if(done>=TOTAL) msg.textContent='Parabéns! Você concluiu todos os módulos da trilha. 🎉';
+      else msg.textContent='Continue assim! Faltam '+(TOTAL-done)+' módulo(s) para concluir a trilha.';
+    }
+    try{
+      var links=document.querySelectorAll('a[href^="modulo-"]');
+      links.forEach(function(a){
+        var m=a.getAttribute('href').match(/modulo-0?(\d+)\.html/);
+        if(m && P[parseInt(m[1],10)] && !a.querySelector('.lex-done-badge')){
+          var badge=document.createElement('span');
+          badge.className='lex-done-badge';
+          badge.textContent='\u2713 conclu\u00eddo';
+          badge.style.cssText='display:inline-block;margin-top:8px;font-size:11px;font-weight:700;letter-spacing:.5px;color:#2E9E7B;text-transform:uppercase;';
+          a.appendChild(badge);
+        }
+      });
+    }catch(e){}
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run);
+  else run();
+})();
+</script>
+<!-- ===== FIM DA BARRA DE PROGRESSO ===== -->
+
   <div class="grid">
 
     <a class="mod on" href="modulo-01.html">
